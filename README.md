@@ -1,6 +1,6 @@
 # API de Doação de Livros
 
-Uma API desenvolvida em Python com Flask para gerenciamento de doações de livros. A aplicação permite o cadastro de usuários, cadastro de livros disponíveis para doação, e controle do processo de doação, incluindo histórico de doações realizadas.
+Uma API desenvolvida em Python com Flask para gerenciamento de doações de livros.
 
 ## Funcionalidades
 
@@ -20,6 +20,7 @@ Uma API desenvolvida em Python com Flask para gerenciamento de doações de livr
 - **Flask-SQLAlchemy**: ORM para interação com banco de dados
 - **SQLite**: Banco de dados relacional leve
 - **Flask-Swagger-UI**: Documentação interativa da API (OpenAPI/Swagger)
+- **Flask-CORS**: Extensão para permitir que o backend receba requisições via frontend
 
 ## Estrutura do Banco de Dados
 
@@ -69,7 +70,7 @@ Ative o ambiente virtual:
 venv\Scripts\activate
 ```
 
-Se encontrar um erro de política de execução do PowerShell, execute primeiro:
+Caso encontre um erro de política de execução do PowerShell, execute primeiro:
 ```bash
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 ```
@@ -86,11 +87,6 @@ Instale todas as dependências necessárias listadas no arquivo `requirements.tx
 ```bash
 pip install -r requirements.txt
 ```
-
-As dependências incluem:
-- Flask==3.0.0
-- Flask-SQLAlchemy==3.1.1
-- flask-swagger-ui==4.11.1
 
 ## Execução da Aplicação
 
@@ -155,7 +151,25 @@ Busca informações de um usuário específico.
 }
 ```
 
-#### 3. POST `/cadastrar_livro`
+#### 3. GET `/usuarios`
+Lista todos os usuários cadastrados.
+
+**Resposta (200):**
+```json
+{
+  "total": 10,
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "João Silva",
+      "email": "joao.silva@email.com",
+      "data_cadastro": "28/06/2026"
+    }
+  ]
+}
+```
+
+#### 4. POST `/cadastrar_livro`
 Cadastra um novo livro para doação.
 
 **Corpo da Requisição:**
@@ -180,7 +194,7 @@ Cadastra um novo livro para doação.
 }
 ```
 
-#### 4. GET `/livros_disponiveis`
+#### 5. GET `/livros_disponiveis`
 Lista todos os livros disponíveis para doação.
 
 **Resposta (200):**
@@ -199,30 +213,7 @@ Lista todos os livros disponíveis para doação.
 }
 ```
 
-#### 5. POST `/doar_livro`
-Realiza a doação de um livro disponível.
-
-**Corpo da Requisição:**
-```json
-{
-  "livro_id": 1,
-  "usuario_receptor_id": 2
-}
-```
-
-**Resposta (200):**
-```json
-{
-  "mensagem": "Doação realizada com sucesso",
-  "livro_id": 1,
-  "titulo": "O Pequeno Príncipe",
-  "usuario_doador_id": 1,
-  "usuario_receptor_id": 2,
-  "data_doacao": "28/06/2026"
-}
-```
-
-#### 5. DELETE `/deletar_livro/{livro_id}`
+#### 6. DELETE `/deletar_livro/{livro_id}`
 Deleta um livro do sistema (apenas se estiver disponível).
 
 **Parâmetros:**
@@ -243,21 +234,26 @@ Deleta um livro do sistema (apenas se estiver disponível).
 }
 ```
 
-#### 6. GET `/usuarios`
-Lista todos os usuários cadastrados.
+#### 7. POST `/doar_livro`
+Realiza a doação de um livro disponível.
+
+**Corpo da Requisição:**
+```json
+{
+  "livro_id": 1,
+  "usuario_receptor_id": 2
+}
+```
 
 **Resposta (200):**
 ```json
 {
-  "total": 10,
-  "usuarios": [
-    {
-      "id": 1,
-      "nome": "João Silva",
-      "email": "joao.silva@email.com",
-      "data_cadastro": "28/06/2026"
-    }
-  ]
+  "mensagem": "Doação realizada com sucesso",
+  "livro_id": 1,
+  "titulo": "O Pequeno Príncipe",
+  "usuario_doador_id": 1,
+  "usuario_receptor_id": 2,
+  "data_doacao": "28/06/2026"
 }
 ```
 

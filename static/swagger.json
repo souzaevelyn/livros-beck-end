@@ -164,6 +164,58 @@
         }
       }
     },
+    "/usuarios": {
+      "get": {
+        "summary": "Listar todos os usuários cadastrados",
+        "description": "Endpoint para listar todos os usuários cadastrados no sistema.",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "example": 10,
+                      "description": "Total de usuários cadastrados"
+                    },
+                    "usuarios": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "nome": {
+                            "type": "string",
+                            "example": "João Silva"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "joao.silva@email.com"
+                          },
+                          "data_cadastro": {
+                            "type": "string",
+                            "example": "28/06/2026"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
     "/cadastrar_livro": {
       "post": {
         "summary": "Cadastrar um novo livro para doação",
@@ -332,6 +384,81 @@
         }
       }
     },
+    "/deletar_livro/{livro_id}": {
+      "delete": {
+        "summary": "Deletar um livro",
+        "description": "Endpoint para deletar um livro do sistema. Só é possível deletar livros que estão disponíveis (não doados).",
+        "parameters": [
+          {
+            "name": "livro_id",
+            "in": "path",
+            "required": true,
+            "description": "ID do livro a ser deletado",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensagem": {
+                      "type": "string",
+                      "example": "Livro deletado com sucesso"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro na requisição - livro já foi doado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "erro": {
+                      "type": "string",
+                      "example": "Não é possível deletar livro que já foi doado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Livro não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "erro": {
+                      "type": "string",
+                      "example": "Livro não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
     "/doar_livro": {
       "post": {
         "summary": "Realizar a doação de um livro",
@@ -422,133 +549,6 @@
                     "erro": {
                       "type": "string",
                       "example": "Usuário receptor não encontrado"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro interno do servidor"
-          }
-        }
-      }
-    },
-    "/deletar_livro/{livro_id}": {
-      "delete": {
-        "summary": "Deletar um livro",
-        "description": "Endpoint para deletar um livro do sistema. Só é possível deletar livros que estão disponíveis (não doados).",
-        "parameters": [
-          {
-            "name": "livro_id",
-            "in": "path",
-            "required": true,
-            "description": "ID do livro a ser deletado",
-            "schema": {
-              "type": "integer",
-              "example": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Livro deletado com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "mensagem": {
-                      "type": "string",
-                      "example": "Livro deletado com sucesso"
-                    },
-                    "id": {
-                      "type": "integer",
-                      "example": 1
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Erro na requisição - livro já foi doado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "erro": {
-                      "type": "string",
-                      "example": "Não é possível deletar livro que já foi doado"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Livro não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "erro": {
-                      "type": "string",
-                      "example": "Livro não encontrado"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Erro interno do servidor"
-          }
-        }
-      }
-    },
-    "/usuarios": {
-      "get": {
-        "summary": "Listar todos os usuários cadastrados",
-        "description": "Endpoint para listar todos os usuários cadastrados no sistema.",
-        "responses": {
-          "200": {
-            "description": "Lista de usuários retornada com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "total": {
-                      "type": "integer",
-                      "example": 10,
-                      "description": "Total de usuários cadastrados"
-                    },
-                    "usuarios": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "integer",
-                            "example": 1
-                          },
-                          "nome": {
-                            "type": "string",
-                            "example": "João Silva"
-                          },
-                          "email": {
-                            "type": "string",
-                            "example": "joao.silva@email.com"
-                          },
-                          "data_cadastro": {
-                            "type": "string",
-                            "example": "28/06/2026"
-                          }
-                        }
-                      }
                     }
                   }
                 }
