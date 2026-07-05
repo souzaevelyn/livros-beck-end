@@ -16,9 +16,9 @@ Uma API desenvolvida em Python com Flask para gerenciamento de doações de livr
 ## Tecnologias Utilizadas
 
 - **Python 3.x**: Linguagem de programação
+- **SQLite**: Banco de dados relacional leve
 - **Flask**: Framework web para criação da API
 - **Flask-SQLAlchemy**: ORM para interação com banco de dados
-- **SQLite**: Banco de dados relacional leve
 - **Flask-Swagger-UI**: Documentação interativa da API (OpenAPI/Swagger)
 - **Flask-CORS**: Extensão para permitir que o backend receba requisições via frontend
 
